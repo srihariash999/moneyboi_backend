@@ -1,3 +1,4 @@
 {
-    "jwtPrivateKey": "moneyboi_jwtPrivateKey"
+    "jwtPrivateKey": "moneyboi_jwtPrivateKey",
+    "database":"moneyboi_database"
 }

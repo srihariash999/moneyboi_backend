@@ -13,7 +13,16 @@ if(!config.get('jwtPrivateKey')){
     process.exit(1);
 }
 
-mongoose.connect('mongodb://localhost/moneyboi')
+if(!config.get('database')){
+    console.error('FATAL ERROR: database not defined');
+    process.exit(1);
+}
+
+// mongoose.connect('mongodb://localhost/moneyboi')
+//     .then(() => console.log('Connected to mongodb'))
+//     .catch(err => console.log('Could not connect to mongodb...', err));
+
+mongoose.connect(config.get('database'))
     .then(() => console.log('Connected to mongodb'))
     .catch(err => console.log('Could not connect to mongodb...', err));
 
