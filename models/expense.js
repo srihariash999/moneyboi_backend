@@ -9,6 +9,13 @@ const expenseSchema = new mongoose.Schema(
             minlength: 3,
             maxlength: 255
         },
+        remarks: {
+            type: String,
+            
+            minlength: 0,
+            
+            
+        },
         amount: {
             type: Number,
             required: true,
@@ -35,6 +42,7 @@ function validateExpense(expense) {
         category: Joi.string().min(3).max(255).required(),
         amount: Joi.number().min(0).required(),
         record_date: Joi.date().required(),
+        remarks: Joi.string().min(0),
     });
 
     return schema.validate(expense);
