@@ -1,4 +1,6 @@
 {
     "jwtPrivateKey": "",
-    "database": ""
+    "database": "",
+    "MJ_APIKEY_PRIVATE": "",
+    "MJ_APIKEY_PUBLIC": ""
 }

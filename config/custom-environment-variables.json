@@ -1,4 +1,6 @@
 {
     "jwtPrivateKey": "moneyboi_jwtPrivateKey",
-    "database":"moneyboi_database"
+    "database":"moneyboi_database",
+    "MJ_APIKEY_PRIVATE": "MJ_APIKEY_PRIVATE",
+    "MJ_APIKEY_PUBLIC": "MJ_APIKEY_PUBLIC"
 }
