@@ -48,5 +48,17 @@ function validateExpense(expense) {
     return schema.validate(expense);
 }
 
+function validateExpenseUpdate(expense) {
+    const schema = Joi.object({
+        category: Joi.string().min(3).max(255),
+        amount: Joi.number().min(0),
+        record_date: Joi.date(),
+        remarks: Joi.string().min(0),
+    });
+
+    return schema.validate(expense);
+}
+
 exports.Expense = Expense;
 exports.validate = validateExpense;
+exports.validateExpenseUpdate = validateExpenseUpdate;
