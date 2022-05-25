@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const expenses = require("./routes/expenses");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
+const friends = require("./routes/friends");
 
 const config = require("config");
 
@@ -41,6 +42,7 @@ app.use(express.json());
 app.use("/api/users", users);
 app.use("/api/auth", auth);
 app.use("/api/expenses", expenses);
+app.use("/api/friends", friends);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
