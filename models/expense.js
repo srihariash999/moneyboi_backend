@@ -10,11 +10,8 @@ const expenseSchema = new mongoose.Schema(
             maxlength: 255
         },
         remarks: {
-            type: String,
-            
-            minlength: 0,
-            
-            
+            type: String,     
+            minlength: 0,  
         },
         amount: {
             type: Number,
