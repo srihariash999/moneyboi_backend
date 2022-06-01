@@ -8,12 +8,21 @@ const { UserOtp, validateUserOtp } = require("../models/user_otp");
 const otpGenerator = require("otp-generator");
 
 router.get("/me", auth, async (req, res) => {
+  // #swagger.tags = ['Users']
   const user = await User.findById(req.user._id).select("-password");
   res.send(user);
 });
 
 //$ API to create a new user.
 router.post("/", async (req, res) => {
+  // #swagger.tags = ['Users']
+    /*	#swagger.parameters['body'] = {
+            in: 'body',
+            description: 'Create new User',
+            required: true,
+            schema: { $ref: "#/definitions/AddUser" }
+    } */
+
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -30,6 +39,7 @@ router.post("/", async (req, res) => {
 
 //$ API for forgot password OTP generate.
 router.post("/forgotpassword/otp/generate", async (req, res) => {
+  // #swagger.tags = ['Users']
   let userEmail = req.body.email;
 
   if (!userEmail) return res.status(400).send("Email is required.");
@@ -102,6 +112,7 @@ router.post("/forgotpassword/otp/generate", async (req, res) => {
 
 //$ API for forgot password OTP verify.
 router.post("/forgotpassword/otp/verify", async (req, res) => {
+  // #swagger.tags = ['Users']
   let otp = req.body.otp;
   let userEmail = req.body.email;
   let newPassword = req.body.new_password;
