@@ -10,6 +10,7 @@ const _ = require("lodash");
 
 //* Create Expense record api
 router.post("/", auth, async (req, res) => {
+  // #swagger.tags = ['Expenses']
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const id = req.user._id;
@@ -31,6 +32,7 @@ router.post("/", auth, async (req, res) => {
 });
 
 router.get("/", auth, async (req, res) => {
+  // #swagger.tags = ['Expenses']
   try {
     const id = req.user._id;
     // console.log(`id from token : ${id}`);
@@ -73,6 +75,8 @@ router.get("/", auth, async (req, res) => {
 
 //$ API for updating an expense record.
 router.put("/:id", auth, async (req, res) => {
+  // #swagger.tags = ['Expenses']
+
   // validate the update request's body first.
   const { error } = validateExpenseUpdate(req.body);
   // if the body is not valid, return 400.
@@ -111,6 +115,7 @@ router.put("/:id", auth, async (req, res) => {
 
 //$ API for delete an expense record.
 router.delete("/:id", auth, async (req, res) => {
+  // #swagger.tags = ['Expenses']
   try {
     const id = req.params.id;
 
