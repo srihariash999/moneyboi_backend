@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+const swaggerUi = require("swagger-ui-express"), swaggerDocument = require("./swagger.json");
 const mongoose = require("mongoose");
 const expenses = require("./routes/expenses");
 const users = require("./routes/users");
@@ -37,6 +37,12 @@ mongoose
   .connect(config.get("database"))
   .then(() => console.log("Connected to mongodb"))
   .catch((err) => console.log("Could not connect to mongodb...", err));
+
+  app.use(
+    '/api-docs',
+    swaggerUi.serve, 
+    swaggerUi.setup(swaggerDocument)
+  );
 
 app.use(express.json());
 app.use("/api/users", users);

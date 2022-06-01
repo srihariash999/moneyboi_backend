@@ -5,6 +5,7 @@ const auth = require("../middleware/auth");
 const { User } = require("../models/user");
 
 router.get("/", auth, async (req, res) => {
+  // #swagger.tags = ['Friends']
   const id = req.user._id;
   // Query : either user1 is the logged in user or user2 is the logged in user
   //         and the request status is accepted.
@@ -28,6 +29,8 @@ router.get("/", auth, async (req, res) => {
 });
 
 router.get("/pending_action", auth, async (req, res) => {
+  // #swagger.tags = ['Friends']
+
   const id = req.user._id;
   const requested = await Friend.find({ user1: id }).and({ accepted: false });
   let requestedList = [];
@@ -60,6 +63,8 @@ router.get("/pending_action", auth, async (req, res) => {
 
 //* Create Friend Request Api
 router.post("/", auth, async (req, res) => {
+  // #swagger.tags = ['Friends']
+
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const id = req.user._id;
@@ -130,6 +135,8 @@ router.post("/", auth, async (req, res) => {
 
 //* Accept Friend Request Api
 router.post("/accept_request", auth, async (req, res) => {
+  // #swagger.tags = ['Friends']
+
   const fId = req.body.id;
   if (fId === null || fId === undefined) {
     return res.status(400).send("Friend request id is required");
@@ -159,6 +166,8 @@ router.post("/accept_request", auth, async (req, res) => {
 
 //* Delete Friend Request Api
 router.delete("/delete_request/:id", auth, async (req, res) => {
+  // #swagger.tags = ['Friends']
+  
   const fId = req.params.id;
   if (fId === null || fId === undefined) {
     return res.status(400).send("Friend request id is required");
