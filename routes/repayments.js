@@ -15,6 +15,7 @@ const { User } = require("../models/user");
 
 //* Get all of user's repayments API.
 router.get("/", auth, async (req, res) => {
+  // #swagger.tags = ['Repayments']
   const id = req.user._id;
   // Query : either user1 is the logged in user or user2 is the logged in user
   const repayments = await RepaymentDetails.find().or([
@@ -31,8 +32,7 @@ router.get("/", auth, async (req, res) => {
     repaymentsList.push({
       id: i._id,
       friend: user,
-      user1_balance: i.user1_balance,
-      user2_balance: i.user2_balance,
+      balance: i.user1 == id ? i.user1_balance : i.user2_balance,
       created_at: i.created_at,
     });
   }
@@ -73,6 +73,7 @@ router.get("/", auth, async (req, res) => {
 
 //* Create New Repayment Account Api
 router.post("/", auth, async (req, res) => {
+  // #swagger.tags = ['Repayments']
   const { error } = validateRepaymentDetails(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const id = req.user._id;
@@ -126,6 +127,7 @@ router.post("/", auth, async (req, res) => {
 
 //* Get all of user's repayment transactions by ID.
 router.get("/transactions", auth, async (req, res) => {
+  // #swagger.tags = ['Repayments']
   const id = req.user._id;
 
   const repayId = req.query.id;
@@ -145,6 +147,7 @@ router.get("/transactions", auth, async (req, res) => {
 
 //* Create New Repayment Transaction Api
 router.post("/transaction", auth, async (req, res) => {
+  // #swagger.tags = ['Repayments']
   const { error } = validateRepaymentTransaction(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
