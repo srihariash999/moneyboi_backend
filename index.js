@@ -34,11 +34,6 @@ if (!config.get("MJ_APIKEY_PRIVATE")) {
   process.exit(1);
 }
 
-if (!config.get("GOOGLE_APPLICATION_CREDENTIALS")) {
-  console.error("FATAL ERROR: GOOGLE_APPLICATION_CREDENTIALS not defined");
-  process.exit(1);
-}
-
 mongoose
   .connect(config.get("database"))
   .then(() => console.log("Connected to mongodb"))
