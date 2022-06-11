@@ -636,6 +636,87 @@
           }
         }
       }
+    },
+    "/api/repayments/transaction/consent": {
+      "post": {
+        "tags": [
+          "Repayments"
+        ],
+        "summary": "Endpoint to be used to add consent to a repayment transaction",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/notification_tokens/": {
+      "post": {
+        "tags": [
+          "NotificationTokens"
+        ],
+        "summary": "Create a record of notification token for a device.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-auth-token",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   },
   "definitions": {

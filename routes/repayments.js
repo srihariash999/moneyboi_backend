@@ -8,10 +8,14 @@ const {
   validateRepaymentTransaction,
 } = require("../models/repayment_transaction");
 
+const { NotificationToken } = require("../models/notification_token");
+
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const { User } = require("../models/user");
+// const { route } = require("./expenses");
+const { sendNotification } = require("../utilities/firebase");
 
 //* Get all of user's repayments API.
 router.get("/", auth, async (req, res) => {
@@ -39,37 +43,6 @@ router.get("/", auth, async (req, res) => {
 
   res.send(repaymentsList);
 });
-
-// router.get("/pending_action", auth, async (req, res) => {
-//   const id = req.user._id;
-//   const requested = await Friend.find({ user1: id }).and({ accepted: false });
-//   let requestedList = [];
-
-//   for (var i of requested) {
-//     let user = await User.findById(i.user2);
-//     requestedList.push({
-//       name: user.name,
-//       email: user.email,
-//       id: i._id,
-//     });
-//   }
-
-//   const pending = await Friend.find({ user2: id }).and({ accepted: false });
-//   let pendingList = [];
-
-//   for (var i of pending) {
-//     let user = await User.findById(i.user1);
-//     pendingList.push({
-//       name: user.name,
-//       email: user.email,
-//       id: i._id,
-//     });
-//   }
-//   res.send({
-//     pending: pendingList,
-//     requested: requestedList,
-//   });
-// });
 
 //* Create New Repayment Account Api
 router.post("/", auth, async (req, res) => {
@@ -110,6 +83,27 @@ router.post("/", auth, async (req, res) => {
 
   try {
     let newRepayAcc = await repayAcc.save();
+
+    // Get the notif token of user2.
+    let notificationToken = await NotificationToken.findOne({
+      user: user2._id,
+    });
+    if (notificationToken) {
+      console.log(" notif token not null : ", notificationToken);
+      // Send notification to user2.
+      sendNotification(
+        notificationToken.token,
+        "New Repay Account !",
+        `${user1.name} has created a new Repay account with you!`
+      )
+        .then((res) => {
+          console.log(" notification sent : ", res);
+        })
+        .catch((err) => {
+          console.log(" notification error : ", err);
+        });
+    }
+
     let map = {
       friend: user2,
       user1_balance: newRepayAcc.user1_balance,
@@ -141,7 +135,6 @@ router.get("/transactions", auth, async (req, res) => {
   const transactions = await RepaymentTransaction.find({
     repayment_account: repayId,
   });
-
   res.send(transactions);
 });
 
@@ -182,9 +175,11 @@ router.post("/transaction", auth, async (req, res) => {
 
   try {
     let newTransaction = await transaction.save();
-    repayAcc.user1_balance += newTransaction.user1_transaction;
-    repayAcc.user2_balance += newTransaction.user2_transaction;
-    await repayAcc.save();
+    // sendNotification(
+    //   "d0cX3Q3xRO-pi5it8_qB4-:APA91bFxCUzz_1rBgoBuqt1J7QPR5DSPIVWaSi0GlZFjUQDC2qirntB_tbdCtxj0GauQjhJGI-Ebp49eeKZp0lLCr24labpouxvukDQ6xv8YfpTSF6DI7wgMbDyVqTN3VG-WbMODYh21",
+    //   "test",
+    //   "testtttt"
+    // );
     res.send(newTransaction);
     return;
   } catch (e) {
@@ -193,62 +188,76 @@ router.post("/transaction", auth, async (req, res) => {
   }
 });
 
-// //* Accept Friend Request Api
-// router.post("/accept_request", auth, async (req, res) => {
-//   const fId = req.body.id;
-//   if (fId === null || fId === undefined) {
-//     return res.status(400).send("Friend request id is required");
-//   }
-//   let fReq;
-//   try {
-//     fReq = await Friend.findById(fId);
-//   } catch (e) {
-//     return res.status(400).send("Given Id is invalid");
-//   }
+//* Consent a Repayment Transaction - API (WIP)
+router.post("/transaction/consent", auth, async (req, res) => {
+  // #swagger.tags = ['Repayments']
 
-//   if (!fReq) {
-//     return res.status(400).send("Friend request with given Id not found.");
-//   }
+  // #swagger.summary = 'Endpoint to be used to add consent to a repayment transaction'
 
-//   // Update the 'accepted' field of found friend request
-//   fReq.accepted = true;
-//   try {
-//     await fReq.save();
-//     res.send(fReq);
-//     return;
-//   } catch (e) {
-//     res.status(400).send(`Server error $e`);
-//     return;
-//   }
-// });
+  const transactionId = req.body.id;
+  if (!transactionId) return res.status(400).send("Transaction ID is required");
 
-// //* Delete Friend Request Api
-// router.delete("/delete_request/:id", auth, async (req, res) => {
-//   const fId = req.params.id;
-//   if (fId === null || fId === undefined) {
-//     return res.status(400).send("Friend request id is required");
-//   }
-//   let fReq;
-//   try {
-//     fReq = await Friend.findById(fId);
-//   } catch (e) {
-//     return res.status(400).send("Given Id is invalid");
-//   }
+  const transaction = await RepaymentTransaction.findById(transactionId);
 
-//   if (!fReq) {
-//     return res.status(400).send("Friend request with given Id not found.");
-//   }
+  if (!transaction) {
+    return res.status(400).send("Transaction with given ID not found");
+  }
 
-//   // Delete the found friend request
+  const id = req.user._id;
 
-//   try {
-//     await fReq.delete();
-//     res.status(204).send();
-//     return;
-//   } catch (e) {
-//     res.status(400).send(`Server error $e`);
-//     return;
-//   }
-// });
+  // check if the user is the sender or receiver of the transaction.
+  // if not then the user should not modify anything in this transaction.
+  if (id !== transaction.user1 && id !== transaction.user2) {
+    return res
+      .status(403)
+      .send("You are not authorized to modify this transaction.");
+  }
+
+  let isUser1 = true;
+  if (id === transaction.user2) {
+    isUser1 = false;
+  }
+
+  // check if the user has already consented to this transaction.
+  if (isUser1 && transaction.user1_accepted) {
+    return res
+      .status(400)
+      .send("You have already consented to this transaction.");
+  }
+
+  if (!isUser1 && transaction.user2_accepted) {
+    return res
+      .status(400)
+      .send("You have already consented to this transaction.");
+  }
+
+  //   Update the consent.
+
+  if (isUser1) {
+    transaction.user1_accepted = true;
+  } else {
+    transaction.user2_accepted = true;
+  }
+
+  try {
+    await transaction.save();
+    const repayAcc = await RepaymentDetails.findById(
+      transaction.repayment_account
+    );
+    repayAcc.user1_balance += transaction.user1_transaction;
+    repayAcc.user2_balance += transaction.user2_transaction;
+    await repayAcc.save();
+    // sendNotification(
+    //   "d0cX3Q3xRO-pi5it8_qB4-:APA91bFxCUzz_1rBgoBuqt1J7QPR5DSPIVWaSi0GlZFjUQDC2qirntB_tbdCtxj0GauQjhJGI-Ebp49eeKZp0lLCr24labpouxvukDQ6xv8YfpTSF6DI7wgMbDyVqTN3VG-WbMODYh21",
+    //   "test",
+    //   "testtttt"
+    // );
+    res.send(transaction);
+    return;
+  } catch (e) {
+    res.status(400).send(`Server error ${e}`);
+    return;
+  }
+});
 
 module.exports = router;
