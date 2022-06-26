@@ -160,18 +160,31 @@ router.post("/transaction", auth, async (req, res) => {
 
   let bal1 = req.body.amount;
   let bal2 = req.body.amount * -1;
-
+  let transaction;
   //   create new repayment transaction.
-  let transaction = new RepaymentTransaction({
-    user1: repayAcc.user1,
-    user2: repayAcc.user2,
-    repayment_account: repayId,
-    user1_transaction: id === repayAcc.user1 ? bal1 : bal2,
-    user2_transaction: id === repayAcc.user2 ? bal1 : bal2,
-    user1_accepted: id === repayAcc.user1 ? true : false,
-    user2_accepted: id === repayAcc.user2 ? true : false,
-    created_at: Date.now(),
-  });
+  if (req.body.amount < 0) {
+    transaction = new RepaymentTransaction({
+      user1: repayAcc.user1,
+      user2: repayAcc.user2,
+      repayment_account: repayId,
+      user1_transaction: id === repayAcc.user1 ? bal1 : bal2,
+      user2_transaction: id === repayAcc.user2 ? bal1 : bal2,
+      user1_accepted: true,
+      user2_accepted: true,
+      created_at: Date.now(),
+    });
+  } else {
+    transaction = new RepaymentTransaction({
+      user1: repayAcc.user1,
+      user2: repayAcc.user2,
+      repayment_account: repayId,
+      user1_transaction: id === repayAcc.user1 ? bal1 : bal2,
+      user2_transaction: id === repayAcc.user2 ? bal1 : bal2,
+      user1_accepted: id === repayAcc.user1 ? true : false,
+      user2_accepted: id === repayAcc.user2 ? true : false,
+      created_at: Date.now(),
+    });
+  }
 
   try {
     let newTransaction = await transaction.save();
@@ -180,6 +193,12 @@ router.post("/transaction", auth, async (req, res) => {
     //   "test",
     //   "testtttt"
     // );
+    if (req.body.amount < 0) {
+      const repayAcc = await RepaymentDetails.findById(repayId);
+      repayAcc.user1_balance += transaction.user1_transaction;
+      repayAcc.user2_balance += transaction.user2_transaction;
+      await repayAcc.save();
+    }
     res.send(newTransaction);
     return;
   } catch (e) {
