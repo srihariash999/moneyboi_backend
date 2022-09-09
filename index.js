@@ -10,7 +10,7 @@ const friends = require("./routes/friends");
 const repayments = require("./routes/repayments");
 const notification_tokens = require("./routes/notification_tokens");
 const admin = require("firebase-admin");
-var serviceAccount = require("./moneyboi-c4c20-firebase-adminsdk-cq7kd-54256669b1.json");
+// var serviceAccount = require("./moneyboi-c4c20-firebase-adminsdk-cq7kd-54256669b1.json");
 
 const config = require("config");
 
@@ -40,13 +40,13 @@ mongoose
   .catch((err) => console.log("Could not connect to mongodb...", err));
 
 //Startups
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL:
-    "https://moneyboi-c4c20-default-rtdb.asia-southeast1.firebasedatabase.app",
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL:
+//     "https://moneyboi-c4c20-default-rtdb.asia-southeast1.firebasedatabase.app",
+// });
 
-console.log("Initialized Firebase SDK");
+// console.log("Initialized Firebase SDK");
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -82,4 +82,4 @@ app.use("/api/notification_tokens", notification_tokens);
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
-module.exports.customAdmin = admin;
+// module.exports.customAdmin = admin;

@@ -15,7 +15,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const { User } = require("../models/user");
 // const { route } = require("./expenses");
-const { sendNotification } = require("../utilities/firebase");
+// const { sendNotification } = require("../utilities/firebase");
 
 //* Get all of user's repayments API.
 router.get("/", auth, async (req, res) => {
@@ -91,17 +91,17 @@ router.post("/", auth, async (req, res) => {
     if (notificationToken) {
       console.log(" notif token not null : ", notificationToken);
       // Send notification to user2.
-      sendNotification(
-        notificationToken.token,
-        "New Repay Account !",
-        `${user1.name} has created a new Repay account with you!`
-      )
-        .then((res) => {
-          console.log(" notification sent : ", res);
-        })
-        .catch((err) => {
-          console.log(" notification error : ", err);
-        });
+      // sendNotification(
+      //   notificationToken.token,
+      //   "New Repay Account !",
+      //   `${user1.name} has created a new Repay account with you!`
+      // )
+      //   .then((res) => {
+      //     console.log(" notification sent : ", res);
+      //   })
+      //   .catch((err) => {
+      //     console.log(" notification error : ", err);
+      //   });
     }
 
     let map = {
