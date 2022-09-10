@@ -619,6 +619,9 @@
                 },
                 "amount": {
                   "example": "any"
+                },
+                "note": {
+                  "example": "any"
                 }
               }
             }

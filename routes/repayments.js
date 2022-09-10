@@ -142,6 +142,7 @@ router.get("/transactions", auth, async (req, res) => {
 router.post("/transaction", auth, async (req, res) => {
   // #swagger.tags = ['Repayments']
   const { error } = validateRepaymentTransaction(req.body);
+
   if (error) return res.status(400).send(error.details[0].message);
 
   const repayId = req.body.id;
@@ -158,6 +159,7 @@ router.post("/transaction", auth, async (req, res) => {
 
   const id = req.user._id;
 
+  let note = req.body.note;
   let bal1 = req.body.amount;
   let bal2 = req.body.amount * -1;
   let transaction;
@@ -171,6 +173,7 @@ router.post("/transaction", auth, async (req, res) => {
       user2_transaction: id === repayAcc.user2 ? bal1 : bal2,
       user1_accepted: true,
       user2_accepted: true,
+      note: note,
       created_at: Date.now(),
     });
   } else {
@@ -182,6 +185,7 @@ router.post("/transaction", auth, async (req, res) => {
       user2_transaction: id === repayAcc.user2 ? bal1 : bal2,
       user1_accepted: id === repayAcc.user1 ? true : false,
       user2_accepted: id === repayAcc.user2 ? true : false,
+      note: note,
       created_at: Date.now(),
     });
   }
@@ -218,7 +222,7 @@ router.post("/transaction", auth, async (req, res) => {
           console.log(" notification sent : ", res);
         })
         .catch((err) => {
-        console.log(" notification error : ", err);
+          console.log(" notification error : ", err);
         });
     }
 

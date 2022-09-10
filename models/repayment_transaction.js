@@ -22,6 +22,10 @@ const repayTransactionSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 50,
   },
+  note: {
+    type: String,
+    maxlength: 255,
+  },
   user1_transaction: {
     type: Number,
     required: true,
@@ -54,6 +58,7 @@ function validateRepaymentTransaction(repayTransaction) {
   const schema = Joi.object({
     id: Joi.string().min(3).max(50).required(),
     amount: Joi.number().required(),
+    note: Joi.string().max(255).allow("").allow(null),
   });
 
   return schema.validate(repayTransaction);
