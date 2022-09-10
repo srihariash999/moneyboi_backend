@@ -5,10 +5,10 @@
     "description": "Moneyboi is an expense tracker app",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "zealous-gold-lab-coat.cyclic.app",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/api/users/me": {
