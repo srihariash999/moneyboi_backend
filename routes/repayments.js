@@ -15,7 +15,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const { User } = require("../models/user");
 // const { route } = require("./expenses");
-// const { sendNotification } = require("../utilities/firebase");
+const { sendNotification } = require("../utilities/firebase");
 
 //* Get all of user's repayments API.
 router.get("/", auth, async (req, res) => {
@@ -91,17 +91,17 @@ router.post("/", auth, async (req, res) => {
     if (notificationToken) {
       console.log(" notif token not null : ", notificationToken);
       // Send notification to user2.
-      // sendNotification(
-      //   notificationToken.token,
-      //   "New Repay Account !",
-      //   `${user1.name} has created a new Repay account with you!`
-      // )
-      //   .then((res) => {
-      //     console.log(" notification sent : ", res);
-      //   })
-      //   .catch((err) => {
-      //     console.log(" notification error : ", err);
-      //   });
+      sendNotification(
+        notificationToken.token,
+        "New Repay Account !",
+        `${user1.name} has created a new Repay account with you!`
+      )
+        .then((res) => {
+          console.log(" notification sent : ", res);
+        })
+        .catch((err) => {
+          console.log(" notification error : ", err);
+        });
     }
 
     let map = {
@@ -188,17 +188,40 @@ router.post("/transaction", auth, async (req, res) => {
 
   try {
     let newTransaction = await transaction.save();
-    // sendNotification(
-    //   "d0cX3Q3xRO-pi5it8_qB4-:APA91bFxCUzz_1rBgoBuqt1J7QPR5DSPIVWaSi0GlZFjUQDC2qirntB_tbdCtxj0GauQjhJGI-Ebp49eeKZp0lLCr24labpouxvukDQ6xv8YfpTSF6DI7wgMbDyVqTN3VG-WbMODYh21",
-    //   "test",
-    //   "testtttt"
-    // );
+
     if (req.body.amount < 0) {
       const repayAcc = await RepaymentDetails.findById(repayId);
       repayAcc.user1_balance += transaction.user1_transaction;
       repayAcc.user2_balance += transaction.user2_transaction;
       await repayAcc.save();
     }
+
+    // Get the notif token of other user.
+    let otherUser = id === repayAcc.user1 ? repayAcc.user2 : repayAcc.user1;
+    let thisUser = id === repayAcc.user1 ? repayAcc.user1 : repayAcc.user2;
+
+    let notificationToken = await NotificationToken.findOne({
+      user: otherUser.id,
+    });
+    if (notificationToken) {
+      let val = body.amount < 0;
+      console.log(" notif token not null : ", notificationToken);
+      // Send notification to user2.
+      sendNotification(
+        notificationToken.token,
+        "New Transaction",
+        `${thisUser.name} has ${val ? "taken" : "given"} ${
+          val ? "from" : "to"
+        } you.`
+      )
+        .then((res) => {
+          console.log(" notification sent : ", res);
+        })
+        .catch((err) => {
+          console.log(" notification error : ", err);
+        });
+    }
+
     res.send(newTransaction);
     return;
   } catch (e) {
@@ -207,7 +230,7 @@ router.post("/transaction", auth, async (req, res) => {
   }
 });
 
-//* Consent a Repayment Transaction - API (WIP)
+//* Consent a Repayment Transaction - API
 router.post("/transaction/consent", auth, async (req, res) => {
   // #swagger.tags = ['Repayments']
 
@@ -266,11 +289,32 @@ router.post("/transaction/consent", auth, async (req, res) => {
     repayAcc.user1_balance += transaction.user1_transaction;
     repayAcc.user2_balance += transaction.user2_transaction;
     await repayAcc.save();
-    // sendNotification(
-    //   "d0cX3Q3xRO-pi5it8_qB4-:APA91bFxCUzz_1rBgoBuqt1J7QPR5DSPIVWaSi0GlZFjUQDC2qirntB_tbdCtxj0GauQjhJGI-Ebp49eeKZp0lLCr24labpouxvukDQ6xv8YfpTSF6DI7wgMbDyVqTN3VG-WbMODYh21",
-    //   "test",
-    //   "testtttt"
-    // );
+
+    // Get the notif token of other user.
+    let otherUser = isUser1 ? repayAcc.user2 : repayAcc.user1;
+    let thisUser = isUser1 ? repayAcc.user1 : repayAcc.user2;
+
+    let notificationToken = await NotificationToken.findOne({
+      user: otherUser.id,
+    });
+    if (notificationToken) {
+      console.log(" notif token not null : ", notificationToken);
+      // Send notification to user2.
+      sendNotification(
+        notificationToken.token,
+        "New Transaction",
+        `${thisUser.name} has consented to a transaction of value ₹${Math.abs(
+          transaction.user1_transaction
+        )}`
+      )
+        .then((res) => {
+          console.log(" notification sent : ", res);
+        })
+        .catch((err) => {
+          console.log(" notification error : ", err);
+        });
+    }
+
     res.send(transaction);
     return;
   } catch (e) {

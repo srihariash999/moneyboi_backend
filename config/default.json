@@ -1,6 +1,8 @@
 {
-    "jwtPrivateKey": "",
-    "database": "",
-    "MJ_APIKEY_PRIVATE": "",
-    "MJ_APIKEY_PUBLIC": ""
+  "jwtPrivateKey": "",
+  "database": "",
+  "MJ_APIKEY_PRIVATE": "",
+  "MJ_APIKEY_PUBLIC": "",
+  "GOOGLE_APPLICATION_CREDENTIALS": "",
+  "firebase_database": ""
 }

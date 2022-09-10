@@ -34,19 +34,35 @@ if (!config.get("MJ_APIKEY_PRIVATE")) {
   process.exit(1);
 }
 
+if (!config.get("GOOGLE_APPLICATION_CREDENTIALS")) {
+  console.error("FATAL ERROR: GOOGLE_APPLICATION_CREDENTIALS not defined");
+  process.exit(1);
+}
+
+if (!config.get("firebase_database")) {
+  console.error("FATAL ERROR: firebase_database not defined");
+  process.exit(1);
+}
+
 mongoose
   .connect(config.get("database"))
   .then(() => console.log("Connected to mongodb"))
   .catch((err) => console.log("Could not connect to mongodb...", err));
 
 //Startups
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL:
-//     "https://moneyboi-c4c20-default-rtdb.asia-southeast1.firebasedatabase.app",
-// });
+// const serviceAccount = JSON.parse(config.get("GOOGLE_APPLICATION_CREDENTIALS"));
+const serviceAccount = JSON.parse(
+  Buffer.from(config.get("GOOGLE_APPLICATION_CREDENTIALS"), "base64").toString(
+    "ascii"
+  )
+);
+const firebaseDatabaseUrl = config.get("firebase_database");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: firebaseDatabaseUrl,
+});
 
-// console.log("Initialized Firebase SDK");
+console.log("Initialized Firebase SDK");
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -82,4 +98,4 @@ app.use("/api/notification_tokens", notification_tokens);
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
-// module.exports.customAdmin = admin;
+module.exports.customAdmin = admin;

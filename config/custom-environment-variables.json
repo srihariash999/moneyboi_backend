@@ -1,6 +1,8 @@
 {
-    "jwtPrivateKey": "moneyboi_jwtPrivateKey",
-    "database":"moneyboi_database",
-    "MJ_APIKEY_PRIVATE": "MJ_APIKEY_PRIVATE",
-    "MJ_APIKEY_PUBLIC": "MJ_APIKEY_PUBLIC"
+  "jwtPrivateKey": "moneyboi_jwtPrivateKey",
+  "database": "moneyboi_database",
+  "MJ_APIKEY_PRIVATE": "MJ_APIKEY_PRIVATE",
+  "MJ_APIKEY_PUBLIC": "MJ_APIKEY_PUBLIC",
+  "GOOGLE_APPLICATION_CREDENTIALS": "GOOGLE_APPLICATION_CREDENTIALS",
+  "firebase_database": "firebase_database"
 }
