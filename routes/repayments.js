@@ -202,28 +202,41 @@ router.post("/transaction", auth, async (req, res) => {
 
     // Get the notif token of other user.
     let otherUser = id === repayAcc.user1 ? repayAcc.user2 : repayAcc.user1;
-    let thisUser = id === repayAcc.user1 ? repayAcc.user1 : repayAcc.user2;
+    // let thisUser = id === repayAcc.user1 ? repayAcc.user1 : repayAcc.user2;
+
+    // console.log(" orig Id: " + id);
+    // console.log(" user1: " + repayAcc.user1 + " user2: " + repayAcc.user2);
+
+    // console.log(" this user: " + thisUser);
+    // console.log(" other user: " + otherUser);
 
     let notificationToken = await NotificationToken.findOne({
-      user: otherUser.id,
+      user: otherUser,
     });
+    console.log(notificationToken);
     if (notificationToken) {
-      let val = body.amount < 0;
+      let val = req.body.amount < 0;
       console.log(" notif token not null : ", notificationToken);
       // Send notification to user2.
-      sendNotification(
-        notificationToken.token,
-        "New Transaction",
-        `${thisUser.name} has ${val ? "taken" : "given"} ${
-          val ? "from" : "to"
-        } you.`
-      )
-        .then((res) => {
-          console.log(" notification sent : ", res);
-        })
-        .catch((err) => {
-          console.log(" notification error : ", err);
-        });
+      try {
+        const user = await User.findById(otherUser);
+        var notifRes = await sendNotification(
+          notificationToken.token,
+          "New Transaction",
+          `${user.name} has ${val ? "taken" : "given"} ${Math.abs(
+            req.body.amount
+          )} ${val ? "from" : "to"} you`
+        );
+        console.log(" notification sent : ", notifRes);
+      } catch (err) {
+        console.log(" notification error : ", err);
+      }
+      // .then((res) => {
+      //   console.log(" notification sent : ", res);
+      // })
+      // .catch((err) => {
+      //   console.log(" notification error : ", err);
+      // });
     }
 
     res.send(newTransaction);
@@ -296,27 +309,36 @@ router.post("/transaction/consent", auth, async (req, res) => {
 
     // Get the notif token of other user.
     let otherUser = isUser1 ? repayAcc.user2 : repayAcc.user1;
-    let thisUser = isUser1 ? repayAcc.user1 : repayAcc.user2;
+    // let thisUser = isUser1 ? repayAcc.user1 : repayAcc.user2;
 
     let notificationToken = await NotificationToken.findOne({
-      user: otherUser.id,
+      user: otherUser,
     });
     if (notificationToken) {
       console.log(" notif token not null : ", notificationToken);
       // Send notification to user2.
-      sendNotification(
+      const user = await User.findById(otherUser);
+      var notifRes = await sendNotification(
         notificationToken.token,
-        "New Transaction",
-        `${thisUser.name} has consented to a transaction of value ₹${Math.abs(
+        "Update",
+        `${user.name} has consented to a transaction of ₹${Math.abs(
           transaction.user1_transaction
         )}`
-      )
-        .then((res) => {
-          console.log(" notification sent : ", res);
-        })
-        .catch((err) => {
-          console.log(" notification error : ", err);
-        });
+      );
+      console.log(" notification sent : ", notifRes);
+      // sendNotification(
+      //   notificationToken.token,
+      //   "New Transaction",
+      //   `${thisUser.name} has consented to a transaction of value ₹${Math.abs(
+      //     transaction.user1_transaction
+      //   )}`
+      // )
+      //   .then((res) => {
+      //     console.log(" notification sent : ", res);
+      //   })
+      //   .catch((err) => {
+      //     console.log(" notification error : ", err);
+      //   });
     }
 
     res.send(transaction);
