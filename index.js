@@ -73,26 +73,6 @@ app.use("/api/repayments", repayments);
 app.use("/api/repayments", repayments);
 app.use("/api/notification_tokens", notification_tokens);
 
-// app.post("/firebase/notification", (req, res) => {
-//   admin
-//     .messaging()
-//     .sendToDevice(
-//       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWVmOTNiYWIwMDBkMjIzNTYzODVmYmEiLCJpYXQiOjE2NTQ5MzAwNzd9.F8WzEnWBKmaifj4LyTY4_4_z0TuZRauH-c0-qmgES8Q",
-//       {
-//         notification: {
-//           title: " Some title ",
-//           body: " some msg",
-//         },
-//       }
-//     )
-//     .then((response) => {
-//       res.status(200).send("Notification sent successfully");
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-// });
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
