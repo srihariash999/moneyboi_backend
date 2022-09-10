@@ -4,8 +4,9 @@ const router = express.Router();
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const auth = require("../middleware/auth");
-const { UserOtp, validateUserOtp } = require("../models/user_otp");
+const { UserOtp } = require("../models/user_otp");
 const otpGenerator = require("otp-generator");
+const config = require("config");
 
 router.get("/me", auth, async (req, res) => {
   // #swagger.tags = ['Users']
@@ -16,7 +17,7 @@ router.get("/me", auth, async (req, res) => {
 //$ API to create a new user.
 router.post("/", async (req, res) => {
   // #swagger.tags = ['Users']
-    /*	#swagger.parameters['body'] = {
+  /*	#swagger.parameters['body'] = {
             in: 'body',
             description: 'Create new User',
             required: true,
@@ -74,10 +75,10 @@ router.post("/forgotpassword/otp/generate", async (req, res) => {
         await _userOtp.save();
       }
 
-      const mailjet = require("node-mailjet").connect(
-        process.env.MJ_APIKEY_PUBLIC,
-        process.env.MJ_APIKEY_PRIVATE
-      );
+      const publicKey = config.get("MJ_APIKEY_PUBLIC");
+      const privateKey = config.get("MJ_APIKEY_PRIVATE");
+
+      const mailjet = require("node-mailjet").connect(publicKey, privateKey);
       const request = mailjet.post("send", { version: "v3.1" }).request({
         Messages: [
           {
