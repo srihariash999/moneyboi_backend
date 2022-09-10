@@ -218,7 +218,7 @@ router.post("/transaction", auth, async (req, res) => {
           console.log(" notification sent : ", res);
         })
         .catch((err) => {
-          console.log(" notification error : ", err);
+        console.log(" notification error : ", err);
         });
     }
 

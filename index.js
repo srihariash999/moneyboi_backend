@@ -10,7 +10,6 @@ const friends = require("./routes/friends");
 const repayments = require("./routes/repayments");
 const notification_tokens = require("./routes/notification_tokens");
 const admin = require("firebase-admin");
-// var serviceAccount = require("./moneyboi-c4c20-firebase-adminsdk-cq7kd-54256669b1.json");
 
 const config = require("config");
 
@@ -50,7 +49,6 @@ mongoose
   .catch((err) => console.log("Could not connect to mongodb...", err));
 
 //Startups
-// const serviceAccount = JSON.parse(config.get("GOOGLE_APPLICATION_CREDENTIALS"));
 const serviceAccount = JSON.parse(
   Buffer.from(config.get("GOOGLE_APPLICATION_CREDENTIALS"), "base64").toString(
     "ascii"
