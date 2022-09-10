@@ -79,7 +79,7 @@ router.post("/forgotpassword/otp/generate", async (req, res) => {
       const privateKey = config.get("MJ_APIKEY_PRIVATE");
 
       const mailjet = require("node-mailjet").connect(publicKey, privateKey);
-      const request = mailjet.post("send", { version: "v3.1" }).request({
+      const res = await mailjet.post("send", { version: "v3.1" }).request({
         Messages: [
           {
             From: {
@@ -98,13 +98,14 @@ router.post("/forgotpassword/otp/generate", async (req, res) => {
           },
         ],
       });
-      request
-        .then((result) => {
-          console.log(result.body);
-        })
-        .catch((err) => {
-          console.log(err.statusCode);
-        });
+      console.log(res.body);
+      // request
+      //   .then((result) => {
+      //     console.log(result.body);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err.statusCode);
+      //   });
 
       res.send("OTP sent to your email.");
     }
