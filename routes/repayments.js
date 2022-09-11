@@ -309,7 +309,7 @@ router.post("/transaction/consent", auth, async (req, res) => {
 
     // Get the notif token of other user.
     let otherUser = isUser1 ? repayAcc.user2 : repayAcc.user1;
-    // let thisUser = isUser1 ? repayAcc.user1 : repayAcc.user2;
+    let thisUser = isUser1 ? repayAcc.user1 : repayAcc.user2;
 
     let notificationToken = await NotificationToken.findOne({
       user: otherUser,
@@ -317,7 +317,7 @@ router.post("/transaction/consent", auth, async (req, res) => {
     if (notificationToken) {
       console.log(" notif token not null : ", notificationToken);
       // Send notification to user2.
-      const user = await User.findById(otherUser);
+      const user = await User.findById(thisUser);
       var notifRes = await sendNotification(
         notificationToken.token,
         "Update",
