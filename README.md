@@ -61,6 +61,10 @@
 
 Moneyboi is an expense tracker app
 
+- [Front End Repo](https://github.com/srihariash999/moneyboi)
+
+- [Back End Repo](https://github.com/srihariash999/moneyboi_backend)
+
 ### Moneyboi API -  1.0.0 
 `[ Base URL: zealous-gold-lab-coat.cyclic.app/ ]`
 
