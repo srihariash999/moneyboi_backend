@@ -31,15 +31,15 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-router.get("/", auth, async (req, res) => {
+router.post("/get", auth, async (req, res) => {
   // #swagger.tags = ['Expenses']
   try {
     const id = req.user._id;
     // console.log(`id from token : ${id}`);
-    console.log(req.query);
-    if (req.query.date_in != null && req.query.date_out != null) {
-      let dateIn = new Date(req.query.date_in).toISOString();
-      let dateOut = new Date(req.query.date_out).toISOString();
+    console.log(req.body);
+    if (req.body.date_in != null && req.body.date_out != null) {
+      let dateIn = new Date(req.body.date_in).toISOString();
+      let dateOut = new Date(req.body.date_out).toISOString();
       let expenses = await Expense.find({
         user: id,
         record_date: { $gte: dateIn, $lte: dateOut },
@@ -47,16 +47,16 @@ router.get("/", auth, async (req, res) => {
       return res.send(expenses);
     }
 
-    if (req.query.date_in != null && req.query.date_out == null) {
-      let dateIn = new Date(req.query.date_in).toISOString();
+    if (req.body.date_in != null && req.body.date_out == null) {
+      let dateIn = new Date(req.body.date_in).toISOString();
       let expenses = await Expense.find({
         user: id,
         record_date: { $gte: dateIn },
       });
       return res.send(expenses);
     }
-    if (req.query.date_in == null && req.query.date_out != null) {
-      let dateOut = new Date(req.query.date_out).toISOString();
+    if (req.body.date_in == null && req.body.date_out != null) {
+      let dateOut = new Date(req.body.date_out).toISOString();
       let expenses = await Expense.find({
         user: id,
         record_date: { $lte: dateOut },
