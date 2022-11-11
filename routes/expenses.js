@@ -37,8 +37,9 @@ router.get("/", auth, async (req, res) => {
     const id = req.user._id;
     // console.log(`id from token : ${id}`);
     if (req.query.date_in != null && req.query.date_out != null) {
-      let dateIn = new Date(req.query.date_in);
-      let dateOut = new Date(req.query.date_out);
+      console.log(req.query);
+      let dateIn = new Date(req.query.date_in).toISOString();
+      let dateOut = new Date(req.query.date_out).toISOString();
       let expenses = await Expense.find({
         user: id,
         record_date: { $gte: dateIn, $lte: dateOut },
@@ -47,7 +48,7 @@ router.get("/", auth, async (req, res) => {
     }
 
     if (req.query.date_in != null && req.query.date_out == null) {
-      let dateIn = new Date(req.query.date_in);
+      let dateIn = new Date(req.query.date_in).toISOString();
       let expenses = await Expense.find({
         user: id,
         record_date: { $gte: dateIn },
@@ -55,7 +56,7 @@ router.get("/", auth, async (req, res) => {
       return res.send(expenses);
     }
     if (req.query.date_in == null && req.query.date_out != null) {
-      let dateOut = new Date(req.query.date_out);
+      let dateOut = new Date(req.query.date_out).toISOString();
       let expenses = await Expense.find({
         user: id,
         record_date: { $lte: dateOut },
