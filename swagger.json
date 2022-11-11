@@ -5,10 +5,10 @@
     "description": "Moneyboi is an expense tracker app",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "zealous-gold-lab-coat.cyclic.app",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/api/users/me": {
@@ -208,27 +208,34 @@
             "description": "Unauthorized"
           }
         }
-      },
-      "get": {
+      }
+    },
+    "/api/expenses/get": {
+      "post": {
         "tags": [
           "Expenses"
         ],
         "description": "",
         "parameters": [
           {
-            "name": "date_in",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "date_out",
-            "in": "query",
-            "type": "string"
-          },
-          {
             "name": "x-auth-token",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date_in": {
+                  "example": "any"
+                },
+                "date_out": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
