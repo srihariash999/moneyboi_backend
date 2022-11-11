@@ -36,8 +36,8 @@ router.get("/", auth, async (req, res) => {
   try {
     const id = req.user._id;
     // console.log(`id from token : ${id}`);
+    console.log(req.query);
     if (req.query.date_in != null && req.query.date_out != null) {
-      console.log(req.query);
       let dateIn = new Date(req.query.date_in).toISOString();
       let dateOut = new Date(req.query.date_out).toISOString();
       let expenses = await Expense.find({
