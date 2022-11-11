@@ -6,6 +6,8 @@ const doc = {
     description: "Moneyboi is an expense tracker app",
   },
   host: "zealous-gold-lab-coat.cyclic.app",
+  // host: "localhost:3000",
+  // schemes: ["http"],
   schemes: ["https"],
   definitions: {
     AddUser: {
