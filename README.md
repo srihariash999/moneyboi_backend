@@ -109,7 +109,15 @@ _Below is an example of how you can instruct your audience on installing and set
    ```sh
    npm install
    ```
-4. Enter your API  keys in [`default.json`](https://github.com/georgioupanayiotis/moneyboi_backend/blob/master/config/default.json)
+4. Enter your API  keys in [`default.json`](https://github.com/srihariash999/moneyboi_backend/blob/master/config/default.json)
+5. Create a folder named 'secrets' in the root and create a `categories_list.js` file in it.
+   - This file would contain a list of categories of format 
+      ```  
+      {
+        name: "",
+        url: "",
+      }
+      ```
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
