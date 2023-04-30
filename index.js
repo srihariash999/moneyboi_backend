@@ -9,7 +9,9 @@ const auth = require("./routes/auth");
 const friends = require("./routes/friends");
 const repayments = require("./routes/repayments");
 const notification_tokens = require("./routes/notification_tokens");
+const categories = require("./routes/categories");
 const admin = require("firebase-admin");
+// const cors = require("cors");
 
 const config = require("config");
 
@@ -62,6 +64,8 @@ admin.initializeApp({
 
 console.log("Initialized Firebase SDK");
 
+// app.use(cors({ origin: ["http://127.0.0.1:3000", "http://localhost:3000"] }));
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(express.json());
@@ -72,8 +76,9 @@ app.use("/api/friends", friends);
 app.use("/api/repayments", repayments);
 app.use("/api/repayments", repayments);
 app.use("/api/notification_tokens", notification_tokens);
+app.use("/api/categories", categories);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3500;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 module.exports.customAdmin = admin;

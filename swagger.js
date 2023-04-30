@@ -5,10 +5,10 @@ const doc = {
     title: "Moneyboi API",
     description: "Moneyboi is an expense tracker app",
   },
-  // host: "localhost:3000",
-  // schemes: ["http"],
-  host: "zealous-gold-lab-coat.cyclic.app",
-  schemes: ["https"],
+  host: "localhost:3500",
+  schemes: ["http"],
+  // host: "zealous-gold-lab-coat.cyclic.app",
+  // schemes: ["https"],
   definitions: {
     AddUser: {
       $email: "user@email.com",
