@@ -1,6 +1,5 @@
 <a name="readme-top"></a>
 
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -22,8 +21,6 @@
     <a href="https://github.com/srihariash999/moneyboi_backend/issues">Request Feature</a>
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -51,9 +48,8 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 Moneyboi is an expense tracker app
@@ -62,27 +58,25 @@ Moneyboi is an expense tracker app
 
 - [Back End Repo](https://github.com/srihariash999/moneyboi_backend)
 
-### Moneyboi API -  1.0.0 
+### Moneyboi API - 1.0.0
+
 `[ Base URL: zealous-gold-lab-coat.cyclic.app/ ]`
 
 Moneyboi is an expense tracker app
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ### Built With
 
 This section should list any major frameworks/libraries used for the project.
 
-* Node
-* Swagger
+- Node
+- Swagger
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
@@ -91,7 +85,8 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+
+- npm
   ```sh
   npm install npm@latest -g
   ```
@@ -109,22 +104,12 @@ _Below is an example of how you can instruct your audience on installing and set
    ```sh
    npm install
    ```
-4. Enter your API  keys in [`default.json`](https://github.com/srihariash999/moneyboi_backend/blob/master/config/default.json)
-5. Create a folder named 'secrets' in the root and create a `categories_list.js` file in it.
-   - This file would contain a list of categories of format 
-      ```  
-      {
-        name: "",
-        url: "",
-      }
-      ```
-
+4. Enter your API keys in [`default.json`](https://github.com/srihariash999/moneyboi_backend/blob/master/config/default.json)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 _For more examples, please refer to the [Documentation](https://zealous-gold-lab-coat.cyclic.app/api-docs/)_
@@ -132,6 +117,7 @@ _For more examples, please refer to the [Documentation](https://zealous-gold-lab
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -147,9 +133,9 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
 [contributors-url]: https://github.com/srihariash999/moneyboi_backend/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
