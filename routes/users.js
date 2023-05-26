@@ -7,6 +7,7 @@ const auth = require("../middleware/auth");
 const { UserOtp } = require("../models/user_otp");
 const otpGenerator = require("otp-generator");
 const config = require("config");
+require("dotenv").config();
 
 router.get("/me", auth, async (req, res) => {
   // #swagger.tags = ['Users']
@@ -75,8 +76,8 @@ router.post("/forgotpassword/otp/generate", async (req, res) => {
         await _userOtp.save();
       }
 
-      const publicKey = config.get("MJ_APIKEY_PUBLIC");
-      const privateKey = config.get("MJ_APIKEY_PRIVATE");
+      const publicKey = process.env.MJ_APIKEY_PUBLIC;
+      const privateKey = process.env.MJ_APIKEY_PRIVATE;
 
       const mailjet = require("node-mailjet").connect(publicKey, privateKey);
       const result = await mailjet.post("send", { version: "v3.1" }).request({

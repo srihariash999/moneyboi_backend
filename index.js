@@ -12,51 +12,52 @@ const notification_tokens = require("./routes/notification_tokens");
 const categories = require("./routes/categories");
 const admin = require("firebase-admin");
 // const cors = require("cors");
+require("dotenv").config();
 
 const config = require("config");
 
-if (!config.get("jwtPrivateKey")) {
-  console.error("FATAL ERROR: jwtPrivateKey not defined");
-  process.exit(1);
-}
+// if (!config.get("jwtPrivateKey")) {
+//   console.error("FATAL ERROR: jwtPrivateKey not defined");
+//   process.exit(1);
+// }
 
-if (!config.get("database")) {
-  console.error("FATAL ERROR: database not defined");
-  process.exit(1);
-}
+// if (!config.get("database")) {
+//   console.error("FATAL ERROR: database not defined");
+//   process.exit(1);
+// }
 
-if (!config.get("MJ_APIKEY_PUBLIC")) {
-  console.error("FATAL ERROR: MJ_APIKEY_PUBLIC not defined");
-  process.exit(1);
-}
+// if (!config.get("MJ_APIKEY_PUBLIC")) {
+//   console.error("FATAL ERROR: MJ_APIKEY_PUBLIC not defined");
+//   process.exit(1);
+// }
 
-if (!config.get("MJ_APIKEY_PRIVATE")) {
-  console.error("FATAL ERROR: MJ_APIKEY_PRIVATE not defined");
-  process.exit(1);
-}
+// if (!config.get("MJ_APIKEY_PRIVATE")) {
+//   console.error("FATAL ERROR: MJ_APIKEY_PRIVATE not defined");
+//   process.exit(1);
+// }
 
-if (!config.get("GOOGLE_APPLICATION_CREDENTIALS")) {
-  console.error("FATAL ERROR: GOOGLE_APPLICATION_CREDENTIALS not defined");
-  process.exit(1);
-}
+// if (!config.get("GOOGLE_APPLICATION_CREDENTIALS")) {
+//   console.error("FATAL ERROR: GOOGLE_APPLICATION_CREDENTIALS not defined");
+//   process.exit(1);
+// }
 
-if (!config.get("firebase_database")) {
-  console.error("FATAL ERROR: firebase_database not defined");
-  process.exit(1);
-}
+// if (!config.get("firebase_database")) {
+//   console.error("FATAL ERROR: firebase_database not defined");
+//   process.exit(1);
+// }
 
 mongoose
-  .connect(config.get("database"))
+  .connect(process.env.database)
   .then(() => console.log("Connected to mongodb"))
   .catch((err) => console.log("Could not connect to mongodb...", err));
 
 //Startups
 const serviceAccount = JSON.parse(
-  Buffer.from(config.get("GOOGLE_APPLICATION_CREDENTIALS"), "base64").toString(
+  Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS, "base64").toString(
     "ascii"
   )
 );
-const firebaseDatabaseUrl = config.get("firebase_database");
+const firebaseDatabaseUrl = process.env.firebase_database;
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: firebaseDatabaseUrl,
